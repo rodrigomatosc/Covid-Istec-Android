@@ -50,7 +50,7 @@ public class RealTimeItemAdapter extends RecyclerView.Adapter {
         startCountAnimation(realTimeViewHolder.getTextRecovered(), informationCovid.getRecovered());
         startCountAnimation(realTimeViewHolder.getTextDeaths(), informationCovid.getDeaths());
         realTimeViewHolder.getTextCountry().setText(informationCovid.getCountry());
-        realTimeViewHolder.getTextPopulation().setText(decimalFormat.format(informationCovid.getPopulation()));
+        realTimeViewHolder.getTextPopulation().setText(decimalFormat.format(Float.parseFloat(informationCovid.getPopulation())));
         realTimeViewHolder.getTextLatLong().setText(informationCovid.toStringLatLong());
         realTimeViewHolder.getTextLife().setText(informationCovid.getLifeExpectancy());
         realTimeViewHolder.getTextViewCapital().setText(informationCovid.getCapitalCity());

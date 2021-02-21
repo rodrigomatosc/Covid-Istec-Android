@@ -8,10 +8,10 @@ public class InformationCovid {
     private int recovered ;
     private int deaths ;
     private String country ;
-    private int population ;
+    private String population ;
 
     @SerializedName("sq_km_area")
-    private int sqkmArea;
+    private String sqkmArea;
 
     @SerializedName("life_expectancy")
     private String lifeExpectancy;
@@ -58,11 +58,11 @@ public class InformationCovid {
         return country;
     }
 
-    public int getPopulation() {
+    public String getPopulation() {
         return population;
     }
 
-    public int getSqkmArea() {
+    public String getSqkmArea() {
         return sqkmArea;
     }
 

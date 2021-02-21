@@ -1,23 +1,16 @@
 package com.example.covid_19.fragments;
 
-import android.animation.ValueAnimator;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.covid_19.R;
 import com.example.covid_19.adapters.RealTimeItemAdapter;
 import com.example.covid_19.callbacks.APICallback;
@@ -28,11 +21,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Set;
 
 
 public class RealTime extends Fragment {
@@ -74,24 +66,42 @@ public class RealTime extends Fragment {
 
                 Gson gson = new Gson();
                 JsonObject object = gson.fromJson( result, JsonObject.class);
+
+                Set<String> keys = object.keySet();
+
                 JsonElement jsonElement = object.get("All");
 
-                if(jsonElement == null){
+                if(jsonElement == null && keys == null || keys.isEmpty()){
                     Toast.makeText(getContext(), country.getName() + " não possuí dados de COVID-19",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                String string = jsonElement.toString();
-                InformationCovid informationCovid = gson.fromJson(string, InformationCovid.class);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false);
-
-                informationCovid.setCountryObject(country);
                 ArrayList<InformationCovid> arrayList = new ArrayList<>();
-                arrayList.add(informationCovid);
 
+                if(jsonElement == null){
+                    for(String key : keys){
+                        JsonObject jsonObjectKey = object.getAsJsonObject(key);
+
+                        if(jsonObjectKey == null ) continue;
+
+                        JsonElement jsonElementKeyAll = jsonObjectKey.get("All");
+
+                        if(jsonElementKeyAll == null) continue;
+
+                        InformationCovid informationCovid = gson.fromJson(jsonElementKeyAll.toString(), InformationCovid.class);
+                        informationCovid.setCountryObject(country);
+                        arrayList.add(informationCovid);
+                    }
+                }else{
+                    String string = jsonElement.toString();
+                    InformationCovid informationCovid = gson.fromJson(string, InformationCovid.class);
+                    informationCovid.setCountryObject(country);
+                    arrayList.add(informationCovid);
+                }
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false);
                 RealTimeItemAdapter realTimeItemAdapter = new RealTimeItemAdapter(arrayList, getContext());
-
                 RecyclerView recycle = view.findViewById(R.id.recycleViewRealTime);
                 recycle.setLayoutManager(layoutManager);
                 recycle.setAdapter(realTimeItemAdapter);
