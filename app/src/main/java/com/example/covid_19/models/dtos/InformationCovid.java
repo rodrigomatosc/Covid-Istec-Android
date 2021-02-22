@@ -2,6 +2,9 @@ package com.example.covid_19.models.dtos;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+import java.util.HashMap;
+
 public class InformationCovid {
 
     private int confirmed ;
@@ -36,6 +39,27 @@ public class InformationCovid {
 
     private Country countryObject = null;
 
+    private HashMap<Date, String> dates;
+
+    public String getTypeHistory() {
+        return typeHistory;
+    }
+
+    public void setTypeHistory(String typeHistory) {
+        this.typeHistory = typeHistory;
+    }
+
+    private String typeHistory;
+
+
+    public HashMap<Date, String> getDates() {
+        return dates;
+    }
+
+    public void setDates(HashMap<Date, String> dates) {
+        this.dates = dates;
+    }
+
     public String toStringLatLong(){
         String latString = lat==null  || lat.equals("")  ? "----" : lat;
         String longitudeString = longitude == null || longitude.equals("") ? "----" : longitude;
@@ -59,6 +83,7 @@ public class InformationCovid {
     }
 
     public String getPopulation() {
+        if (population== null) return "";
         return population;
     }
 

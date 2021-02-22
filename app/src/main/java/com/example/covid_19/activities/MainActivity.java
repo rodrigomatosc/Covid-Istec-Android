@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.example.covid_19.R;
@@ -30,12 +32,14 @@ import java.util.Optional;
 public class MainActivity extends AppCompatActivity {
 
     private static final String KEY_COUNTRY = "COUNTRY";
+    private static final String KEY_TYPE_HISTORY = "TYPE_HISTORY";
     private static final String URL_COUNTRIES = "https://restcountries.eu/rest/v2/all";
     private APITask task = null;
     private Spinner spinner;
     private Country[] countries;
     private Country countrySelected = null;
     private int positionTab = 0;
+    RadioGroup radioGroupType = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initSpinner();
         initTabLayout();
+        radioGroupType = findViewById(R.id.radioGroupType);
+        radioGroupType.setVisibility(View.GONE);
     }
 
     @Override
@@ -61,8 +67,13 @@ public class MainActivity extends AppCompatActivity {
 
         if(fragment== null) return;
 
+        RadioButton radioButton = findViewById(R.id.radioButtonDeaths);
+        boolean typeDeath = radioButton.isChecked();
+        String type = typeDeath ? "deaths" : "recovered";
+
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_COUNTRY, countrySelected);
+        bundle.putSerializable(KEY_TYPE_HISTORY, type);
         fragment.setArguments(bundle);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -74,9 +85,15 @@ public class MainActivity extends AppCompatActivity {
     private void switchFragmentes(){
 
         switch (positionTab){
-            case 0 : initFragmentBase(RealTime.newInstance());
+            case 0 : {
+                radioGroupType.setVisibility(View.GONE);
+                initFragmentBase(RealTime.newInstance());
+            };
                 break;
-            case 1 : initFragmentBase(History.newInstance());
+            case 1 : {
+                radioGroupType.setVisibility(View.VISIBLE);
+                initFragmentBase(History.newInstance());
+            };
                 break;
         }
     }
