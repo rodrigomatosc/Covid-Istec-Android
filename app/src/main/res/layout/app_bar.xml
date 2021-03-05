@@ -59,7 +59,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="4dp"
-                android:text="Ayo lawan Covid-19 di Indonesia bersama"
+                android:text="Protect yourself and others around you by knowing the facts and taking appropriate precautions. Follow advice provided by your local health authority."
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="parent"

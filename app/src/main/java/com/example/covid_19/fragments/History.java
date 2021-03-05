@@ -110,16 +110,6 @@ public class History extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false);
 
         HashMap<Date, String> hash = information.getDates();
-
-//        List sortedKeys=new ArrayList(hash.keySet());
-//        Collections.sort(sortedKeys);
-//
-//        HashMap<Date, String> hashSorted = new HashMap<>();
-//
-//        for(Object date : sortedKeys){
-//            hashSorted.put((Date) date, hash.get(date));
-//        }
-
         List<Map.Entry<Date, String>> list = new ArrayList<Map.Entry<Date, String>>(hash.entrySet());
         Collections.sort(list, new MapValueKeyComparator<Date, String>());
 
